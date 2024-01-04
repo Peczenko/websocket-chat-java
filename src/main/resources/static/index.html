@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css"
+          href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/ui-lightness/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<noscript>
+    <h2>Sorry! Your browser doesn't support Javascript</h2>
+</noscript>
+<div id="username-page">
+    <div class="username-page-container">
+
+        <h1 class="title">Type your username</h1>
+        <form id="usernameForm" name="usernameForm">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control"/>
+            </div>
+            <div id="BackGroundDIV" class="form-group">
+                <h3>Choose your background</h3>
+                <button type="button" class="changeBG1" onclick="changeBackground1()"></button>
+                <button type="button" class="changeBG2" onclick="changeBackground2()"></button>
+                <button type="button" class="changeBG3" onclick="changeBackground3()"></button>
+            </div>
+            <div id="avatarBackgroundChange" class="form-group">
+                <h3>Choose your avatar</h3>
+                <button type="button" id="changeAvatar1" class="avatarChange"></button>
+                <button type="button" id="changeAvatar2" class="avatarChange"></button>
+                <button type="button" id="changeAvatar3" class="avatarChange"></button>
+
+            </div>
+            <div class="form-group">
+                <button type="submit" class="accent username-submit">Start Chatting</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div id="chat-page" class="hidden">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Group Chat</h2>
+        </div>
+        <div class="connecting">
+            Connecting...
+        </div>
+        <ul id="messageArea">
+
+        </ul>
+        <form id="messageForm" name="messageForm" nameForm="messageForm">
+            <div class="form-group">
+                <div class="input-group clearfix">
+                    <input type="text" id="message" placeholder="Message" autocomplete="off" class="form-control"/>
+                    <button type="submit" class="primary">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/jquery-ui.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>
