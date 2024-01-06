@@ -57,7 +57,6 @@ function changeBackground3() {
 
 function connect(event) {
     username = document.querySelector('#name').value.trim();
-    debugger;
     if (username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
@@ -71,6 +70,7 @@ function connect(event) {
 
 
 function onConnected() {
+    setAvatar(username, a)
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
 
@@ -79,7 +79,6 @@ function onConnected() {
         sender: username,
         type: 'JOIN'
     }))
-
     connectingElement.classList.add('hidden');
 }
 
@@ -91,7 +90,6 @@ function onError(error) {
 
 function sendMessage(event) {
     var messageContent = messageInput.value.trim();
-
     if (messageContent && stompClient) {
         var censoredContent = messageContent.replace(/kurwa/gi, '*****');
         var formattedContent = censoredContent.replace(/(.{1,40}\b)/g, '$1\n');
@@ -100,7 +98,6 @@ function sendMessage(event) {
             content: formattedContent,
             type: 'CHAT'
         };
-
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
@@ -109,9 +106,7 @@ function sendMessage(event) {
 
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-
     var messageElement = document.createElement('li');
-
     if (message.type === 'JOIN') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' joined!';
@@ -127,22 +122,20 @@ function onMessageReceived(payload) {
         avatarElement.style['background-color'] = getAvatarColor(message.sender);
         messageElement.appendChild(avatarElement);
         //TODO: Avatar change
-
         var usernameElement = document.createElement('span');
         var usernameText = document.createTextNode(message.sender);
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
     }
-
-
-    var textElement = document.createElement('p');
-    var messageText = document.createTextNode(message.content);
-    textElement.appendChild(messageText);
-
-    messageElement.appendChild(textElement);
-
-    messageArea.appendChild(messageElement);
-    messageArea.scrollTop = messageArea.scrollHeight;
+        var textElement = document.createElement('p');
+        var messageText = document.createTextNode(message.content);
+        textElement.appendChild(messageText);
+        messageElement.appendChild(textElement);
+        messageArea.appendChild(messageElement);
+        messageArea.scrollTop = messageArea.scrollHeight;
+        stompClient.send("/app/avatar.getAvatar", {}, JSON.stringify({
+        username: username
+            }))
 }
 
 
@@ -155,6 +148,18 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
+function setAvatar(username, url) {
+    stompClient.send("/app/avatar.setAvatar", {}, JSON.stringify({
+        username: username,
+        avatarUrl: url
+    }));
+}
+
+function getAvatar(payload, username) {
+
+
+
+}
+
 usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', sendMessage, true)
-
