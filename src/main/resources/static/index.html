@@ -14,11 +14,11 @@
 </noscript>
 <div id="username-page">
     <div class="username-page-container">
-
         <h1 class="title">Type your username</h1>
         <form id="usernameForm" name="usernameForm">
             <div class="form-group">
                 <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control"/>
+                <span id="nameError" style="color: red;"></span>
             </div>
             <div id="BackGroundDIV" class="form-group">
                 <h3>Choose your background</h3>
@@ -32,10 +32,11 @@
                 <button type="button" id="changeAvatar2" class="avatarChange"></button>
                 <button type="button" id="changeAvatar3" class="avatarChange"></button>
             </div>
+            <input type="file" id="avatarUpload" name="avatar" accept="image/png, image/jpeg">
+            <button id="uploadButton" type="button">Upload</button>
             <div class="form-group">
                 <button type="submit" class="accent username-submit">Start Chatting</button>
             </div>
-
         </form>
     </div>
 </div>
