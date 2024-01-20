@@ -34,6 +34,6 @@ public class ChatController {
     @PostMapping("/usernameCheck")
     @ResponseBody
     public boolean checkUsername(@RequestBody String username) {
-        return !ChatMessage.checkUsername(username);
+        return ChatMessage.checkUsername(username);
     }
 }
