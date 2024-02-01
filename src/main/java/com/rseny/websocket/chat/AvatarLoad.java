@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 @RestController
 public class AvatarLoad {
     private static final String UPLOAD_DIR = "uploads/";
@@ -35,7 +36,7 @@ public class AvatarLoad {
     }
 
     public static void deleteAvatar(String sender) {
-        String avatarUrl = ChatMessage.getAvatarUrlMap(sender);
+        String avatarUrl = UsersInfo.getAvatarMap(sender);
         Path path = Paths.get(avatarUrl.replace("http://localhost:8080/", ""));
         try {
             Files.delete(path);
@@ -43,7 +44,7 @@ public class AvatarLoad {
         } catch (IOException e) {
             System.out.println("there is no such file");
         }
-        ChatMessage.deleteAvatarMap(sender);
+        UsersInfo.deleteAvatarMap(sender);
     }
 }
 

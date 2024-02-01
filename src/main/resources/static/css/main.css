@@ -8,6 +8,7 @@ html, body {
     height: 100%;
     overflow: hidden;
 }
+
 #avatarUpload {
     display: inline-block;
     margin: 20px 0;
@@ -16,21 +17,8 @@ html, body {
     border-radius: 5px;
 }
 
-#uploadButton {
-    display: inline-block;
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-}
+
 #BackGroundDIV h3 {
-    /*font-family: Arial, serif;*/
     font-size: 22px;
     text-align: center;
 
@@ -42,7 +30,7 @@ html, body {
     transition: transform 0.3s;
     margin-top: 25px;
     margin-right: 25px;
-    margin-left:25px;
+    margin-left: 25px;
 }
 
 #BackGroundDIV button:hover {
@@ -51,13 +39,13 @@ html, body {
 
 
 .changeBG1 {
-    background-image: url("picture1.jpg");
+    background-image: url("bg1.jpg");
     background-size: cover;
 }
 
 
 .changeBG2 {
-    background-image: url("picture2.jpg");
+    background-image: url("bg2.jpg");
     background-size: cover;
 
 
@@ -65,29 +53,33 @@ html, body {
 
 
 .changeBG3 {
-    background-image: url("picture3.jpeg");
+    background-image: url("bg3.jpg");
     background-size: cover;
 }
+
 .avatarChange {
-     margin-left: 5px;
-     margin-right: 5px;
-     border-radius: 50%;
-     height: 35px;
-     width: 38px;
- }
-#changeAvatar1{
-    background-image:url("https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
-);
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 50%;
+    height: 46px;
+    width: 46px;
+}
+
+#changeAvatar1 {
+    background-image: url("https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
+    );
     background-size: cover;
 }
-#changeAvatar2{
+
+#changeAvatar2 {
     background-image: url("https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611731.jpg?w=740&t=st=1704632784~exp=1704633384~hmac=4bcd8f694bcd04039f823343ed42549b90ac056e9367740677e9d223ecabf9d0"
-);
+    );
     background-size: cover;
 }
-#changeAvatar3{
+
+#changeAvatar3 {
     background-image: url("https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611716.jpg?size=626&ext=jpg&ga=GA1.1.1675606772.1704632662"
-);
+    );
     background-size: cover;
 }
 

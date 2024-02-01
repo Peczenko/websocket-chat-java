@@ -15,18 +15,16 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage")
     @SendTo("/topic/public")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
-        if (chatMessage.getAvatarUrl() != null && chatMessage.getAvatarUrl().contains("http://localhost:8080/uploads/")){
-            ChatMessage.setAvatarMap(chatMessage.getSender(), chatMessage.getAvatarUrl());
+        if (chatMessage.getAvatarUrl() != null && chatMessage.getAvatarUrl().contains("http://localhost:8080/uploads/")) {
+            UsersInfo.setAvatarMap(chatMessage.getSender(), chatMessage.getAvatarUrl());
         }
-        System.out.println("Map" + ChatMessage.getAvatarMap());
-        System.out.println("Users" + ChatMessage.getUsers());
         return chatMessage;
     }
 
     @MessageMapping("/chat.addUser")
     @SendTo("/topic/public")
     public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-        ChatMessage.setUsers(chatMessage.getSender());
+        UsersInfo.setUsers(chatMessage.getSender());
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         return chatMessage;
     }
@@ -34,6 +32,6 @@ public class ChatController {
     @PostMapping("/usernameCheck")
     @ResponseBody
     public boolean checkUsername(@RequestBody String username) {
-        return ChatMessage.checkUsername(username);
+        return UsersInfo.checkUsername(username);
     }
 }

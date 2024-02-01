@@ -3,6 +3,7 @@ package com.rseny.websocket.config;
 import com.rseny.websocket.chat.AvatarLoad;
 import com.rseny.websocket.chat.ChatMessage;
 import com.rseny.websocket.chat.MessageType;
+import com.rseny.websocket.chat.UsersInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -24,13 +25,13 @@ public class WebSocketEventListener {
         String username = (String) headerAccessor.getSessionAttributes().get("username");
         if (username != null) {
             try {
-                if (ChatMessage.getAvatarUrlMap(username).contains("http://localhost:8080/uploads/") && ChatMessage.getAvatarUrlMap(username) != null) {
+                if (UsersInfo.getAvatarMap(username).contains("http://localhost:8080/uploads/") && UsersInfo.getAvatarMap(username) != null) {
                     AvatarLoad.deleteAvatar(username);
                 }
             } catch (Exception e) {
                 log.info("Avatar not found");
             }
-            ChatMessage.deleteUsers(username);
+            UsersInfo.deleteUsers(username);
             log.info("user disconnected: {}", username);
             var chatMessage = ChatMessage.builder()
                     .type(MessageType.LEAVE)

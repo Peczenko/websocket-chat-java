@@ -21,36 +21,31 @@ let button1 = document.getElementById("changeAvatar1");
 let button2 = document.getElementById("changeAvatar2");
 let button3 = document.getElementById("changeAvatar3");
 
-var a;
-document.querySelector('#uploadButton').addEventListener('click', function (event) {
-    event.preventDefault();
-    var input = document.querySelector('#avatarUpload');
-    var file = input.files[0];
-    var formData = new FormData();
-    console.log("Sending file");
-    formData.append("file", file);
+var avatar;
 
-    fetch('/upload', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.text())
-        .then(url => {
-            a = url;
-        }).catch(error => {
-        console.log(error)
-    })
-})
 
 button1.addEventListener('click', function () {
-    a = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
+    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
+
+});
+button1.addEventListener('hiuck', function () {
+    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
+
+});button1.addEventListener('huick', function () {
+    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
+
+});button1.addEventListener('hiuck', function () {
+    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
+
+});button1.addEventListener('huick', function () {
+    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
 
 });
 button2.addEventListener('click', function () {
-    a = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611731.jpg?w=740&t=st=1704632784~exp=1704633384~hmac=4bcd8f694bcd04039f823343ed42549b90ac056e9367740677e9d223ecabf9d0"
+    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611731.jpg?w=740&t=st=1704632784~exp=1704633384~hmac=4bcd8f694bcd04039f823343ed42549b90ac056e9367740677e9d223ecabf9d0"
 });
 button3.addEventListener('click', function () {
-    a = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611716.jpg?size=626&ext=jpg&ga=GA1.1.1675606772.1704632662"
+    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611716.jpg?size=626&ext=jpg&ga=GA1.1.1675606772.1704632662"
 });
 
 
@@ -77,18 +72,28 @@ function connect(event) {
         fetch("/usernameCheck", {
             method: 'POST',
             body: username,
-            headers :{
+            headers: {
                 "Content-Type": "application/json"
             }
         }).then(response => response.json())
             .then(isAvailable => {
-                if(isAvailable){
+                if (isAvailable) {
+                    var input = document.querySelector('#avatarUpload');
+                    var file = input.files[0];
+                    var formData = new FormData();
+                    console.log("Sending avatar to server");
+                    formData.append("file", file);
+                    if(file) {
+                        uploadAvatar(formData)
+                    }
                     usernamePage.classList.add('hidden');
                     chatPage.classList.remove('hidden');
                     var socket = new SockJS('/ws');
                     stompClient = Stomp.over(socket);
-                    stompClient.connect({}, onConnected, onError);}
-                else{
+                    stompClient.connect({}, onConnected, onError);
+
+
+                } else {
                     alert("USERNAME IS ALREADY TAKEN!");
                 }
             });
@@ -125,7 +130,7 @@ function sendMessage(event) {
             sender: username,
             content: formattedContent,
             type: 'CHAT',
-            avatarUrl: a
+            avatarUrl: avatar
         };
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
@@ -134,45 +139,44 @@ function sendMessage(event) {
 }
 
 function onMessageReceived(payload) {
-    debugger;
     var message = JSON.parse(payload.body);
-        var messageElement = document.createElement('li');
-        if (message.type === 'JOIN') {
-            messageElement.classList.add('event-message');
-            message.content = message.sender + ' joined the chat!';
+    var messageElement = document.createElement('li');
+    if (message.type === 'JOIN') {
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' joined the chat!';
 
-        } else if (message.type === 'LEAVE') {
-            messageElement.classList.add('event-message');
-            message.content = message.sender + ' left the chat!';
+    } else if (message.type === 'LEAVE') {
+        messageElement.classList.add('event-message');
+        message.content = message.sender + ' left the chat!';
+    } else {
+        messageElement.classList.add('chat-message');
+        var avatarElement = document.createElement('i');
+        avatarElement.style.width = "50px";
+        avatarElement.style.height = "50px";
+        if (message.avatarUrl === null) {
+            var avatarText = document.createTextNode(message.sender[0]);
+            avatarElement.appendChild(avatarText);
+            avatarElement.style.display = 'flex';
+            avatarElement.style.justifyContent = 'center';
+            avatarElement.style.alignItems = 'center';
+            avatarElement.style['background-color'] = getAvatarColor(message.sender);
+
         } else {
-            messageElement.classList.add('chat-message');
-            var avatarElement = document.createElement('i');
-            avatarElement.style.width = "50px";
-            avatarElement.style.height = "50px";
-            if (message.avatarUrl === null) {
-                var avatarText = document.createTextNode(message.sender[0]);
-                avatarElement.appendChild(avatarText);
-                avatarElement.style.display = 'flex';
-                avatarElement.style.justifyContent = 'center';
-                avatarElement.style.alignItems = 'center';
-                avatarElement.style['background-color'] = getAvatarColor(message.sender);
-
-            } else {
-                avatarElement.style.backgroundSize = 'cover';
-                avatarElement.style.backgroundImage = 'url(' + message.avatarUrl + ')';
-            }
-            messageElement.appendChild(avatarElement);
-            var usernameElement = document.createElement('span');
-            var usernameText = document.createTextNode(message.sender);
-            usernameElement.appendChild(usernameText);
-            messageElement.appendChild(usernameElement);
+            avatarElement.style.backgroundSize = 'cover';
+            avatarElement.style.backgroundImage = 'url(' + message.avatarUrl + ')';
         }
-        var textElement = document.createElement('p');
-        var messageText = document.createTextNode(message.content);
-        textElement.appendChild(messageText);
-        messageElement.appendChild(textElement);
-        messageArea.appendChild(messageElement);
-        messageArea.scrollTop = messageArea.scrollHeight;
+        messageElement.appendChild(avatarElement);
+        var usernameElement = document.createElement('span');
+        var usernameText = document.createTextNode(message.sender);
+        usernameElement.appendChild(usernameText);
+        messageElement.appendChild(usernameElement);
+    }
+    var textElement = document.createElement('p');
+    var messageText = document.createTextNode(message.content);
+    textElement.appendChild(messageText);
+    messageElement.appendChild(textElement);
+    messageArea.appendChild(messageElement);
+    messageArea.scrollTop = messageArea.scrollHeight;
 }
 
 
@@ -183,6 +187,19 @@ function getAvatarColor(messageSender) {
     }
     var index = Math.abs(hash % colors.length);
     return colors[index];
+}
+function uploadAvatar(formData) {
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(url => {
+            avatar = url;
+            console.log("URL: " + url);
+        }).catch(error => {
+        console.log(error)
+    })
 }
 
 
