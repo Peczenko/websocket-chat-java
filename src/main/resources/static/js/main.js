@@ -7,15 +7,9 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
-var form = document.getElementById('message');
-
 var stompClient = null;
 var username = null;
-let avatars = {};
-var colors = [
-    `#FFD1DC`, `#92A8D1`, `#FED7C3`, `#D7BEF8`, `#98DDCA`,
-    `#FFF9B0`, `#CD5B45`, `#D3D3D3`, `#00CED1`, `#CD853F`
-];
+var colors = [`#FFD1DC`, `#92A8D1`, `#FED7C3`, `#D7BEF8`, `#98DDCA`, `#FFF9B0`, `#CD5B45`, `#D3D3D3`, `#00CED1`, `#CD853F`];
 
 let button1 = document.getElementById("changeAvatar1");
 let button2 = document.getElementById("changeAvatar2");
@@ -25,19 +19,6 @@ var avatar;
 
 
 button1.addEventListener('click', function () {
-    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
-
-});
-button1.addEventListener('hiuck', function () {
-    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
-
-});button1.addEventListener('huick', function () {
-    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
-
-});button1.addEventListener('hiuck', function () {
-    avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
-
-});button1.addEventListener('huick', function () {
     avatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611737.jpg?w=740&t=st=1704632816~exp=1704633416~hmac=ac10f5d88ae056154dabd4e6c29d3c3d88daee7c9287f868e7b610ecb9b3b2d5"
 
 });
@@ -70,9 +51,7 @@ function connect(event) {
     username = document.querySelector('#name').value.trim();
     if (username) {
         fetch("/usernameCheck", {
-            method: 'POST',
-            body: username,
-            headers: {
+            method: 'POST', body: username, headers: {
                 "Content-Type": "application/json"
             }
         }).then(response => response.json())
@@ -83,7 +62,7 @@ function connect(event) {
                     var formData = new FormData();
                     console.log("Sending avatar to server");
                     formData.append("file", file);
-                    if(file) {
+                    if (file) {
                         uploadAvatar(formData)
                     }
                     usernamePage.classList.add('hidden');
@@ -109,8 +88,7 @@ function onConnected() {
     stompClient.subscribe('/topic/public', onMessageReceived);
     // Tell your username to the server
     stompClient.send("/app/chat.addUser", {}, JSON.stringify({
-        sender: username,
-        type: 'JOIN'
+        sender: username, type: 'JOIN'
     }))
     connectingElement.classList.add('hidden');
 }
@@ -127,10 +105,7 @@ function sendMessage(event) {
         var censoredContent = messageContent.replace(/kurwa/gi, '*****');
         var formattedContent = censoredContent.replace(/(.{1,40}\b)/g, '$1\n');
         var chatMessage = {
-            sender: username,
-            content: formattedContent,
-            type: 'CHAT',
-            avatarUrl: avatar
+            sender: username, content: formattedContent, type: 'CHAT', avatarUrl: avatar
         };
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
@@ -188,10 +163,10 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
+
 function uploadAvatar(formData) {
     fetch('/upload', {
-        method: 'POST',
-        body: formData
+        method: 'POST', body: formData
     })
         .then(response => response.text())
         .then(url => {
